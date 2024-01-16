@@ -81,35 +81,8 @@ namespace jlr_sample
         {
             if (this.listViewVehicles.SelectedItems.Count > 0)
             {
-                this.listViewVehicleStatus.Items.Clear();
                 JLRCS.Vehicle vehicle = this.jlr_connection!.vehicles![this.listViewVehicles.SelectedIndices[0]];
-                JsonNode? vehicle_status = vehicle.GetStatus();
-                JsonArray? core_status = vehicle_status!["vehicleStatus"]!["coreStatus"] as JsonArray;
-                JsonArray? ev_status = vehicle_status!["vehicleStatus"]!["evStatus"] as JsonArray;
-
-                string lastUpdated = vehicle_status!["lastUpdatedTime"]!.ToString();
-                this.textBoxVehicleLastUpdated.Text = lastUpdated.Replace("T"," ");
-
-                foreach (JsonNode? node in core_status!)
-                {
-                    JsonObject node_object = node!.AsObject();
-
-                    string node_name = node_object["key"]!.ToString();
-                    string node_value = node_object["value"]!.ToString();
-
-                    this.listViewVehicleStatus.Items.Add(new ListViewItem(new string[] { node_name, node_value }));
-                }
-
-                foreach (JsonNode? node in ev_status!)
-                {
-                    JsonObject node_object = node!.AsObject();
-
-                    string node_name = node_object["key"]!.ToString();
-                    string node_value = node_object["value"]!.ToString();
-
-                    this.listViewVehicleStatus.Items.Add(new ListViewItem(new string[] { node_name, node_value }));
-
-                }
+                this.RefreshVehicleStatus(vehicle);
 
             }
             else
@@ -119,5 +92,48 @@ namespace jlr_sample
             }
 
         }
+
+        private void RefreshVehicleStatus(JLRCS.Vehicle vehicle)
+        {
+            this.listViewVehicleStatus.Items.Clear();
+            JsonNode? vehicle_status = vehicle.GetStatus();
+            JsonArray? core_status = vehicle_status!["vehicleStatus"]!["coreStatus"] as JsonArray;
+            JsonArray? ev_status = vehicle_status!["vehicleStatus"]!["evStatus"] as JsonArray;
+
+            string lastUpdated = vehicle_status!["lastUpdatedTime"]!.ToString();
+            this.textBoxVehicleLastUpdated.Text = lastUpdated.Replace("T", " ");
+
+            foreach (JsonNode? node in core_status!)
+            {
+                JsonObject node_object = node!.AsObject();
+
+                string node_name = node_object["key"]!.ToString();
+                string node_value = node_object["value"]!.ToString();
+
+                this.listViewVehicleStatus.Items.Add(new ListViewItem(new string[] { node_name, node_value }));
+            }
+
+            foreach (JsonNode? node in ev_status!)
+            {
+                JsonObject node_object = node!.AsObject();
+
+                string node_name = node_object["key"]!.ToString();
+                string node_value = node_object["value"]!.ToString();
+
+                this.listViewVehicleStatus.Items.Add(new ListViewItem(new string[] { node_name, node_value }));
+
+            }
+        }
+
+
+        private void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            if (this.listViewVehicles.SelectedItems.Count > 0)
+            {
+                JLRCS.Vehicle vehicle = this.jlr_connection!.vehicles![this.listViewVehicles.SelectedIndices[0]];
+                JsonNode? vehicle_health_status = vehicle.GetHealthStatus();
+                this.RefreshVehicleStatus(vehicle);
+            }
+            }
     }
 }

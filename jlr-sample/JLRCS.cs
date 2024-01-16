@@ -390,7 +390,7 @@ namespace jlr_sample
             {
                 // Update user information
                 JsonObject? headers = this.head!.Copy();
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.User-v3+json";
                 return this.__Post(this.user_id!, this.base_urls["IF9"] + "/users", headers, user_info_data);
             }
 
@@ -465,7 +465,7 @@ namespace jlr_sample
                 // Get vehicle health status
                 JsonObject? headers = this.connection!.head!.Copy();
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json";
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
 
                 JsonObject? vhs_data = this._AuthenticateVHS();
 
@@ -612,7 +612,7 @@ namespace jlr_sample
             {
                 // Reset vehicle alarm
                 JsonObject? headers = this.connection!.head!.Copy();
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json";
                 JsonObject? aloff_data = this._AuthenticateALOFF(pin);
                 return this.__Post("unlock", headers, aloff_data);
@@ -623,7 +623,7 @@ namespace jlr_sample
                 // Sound the horn and blink lights
                 JsonObject? headers = this.connection!.head!.Copy();
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v4+json";
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
                 JsonObject? hblf_data = this._AuthenticateHBLF();
                 return this.__Post("honkBlink", headers, hblf_data);
             }
@@ -709,7 +709,7 @@ namespace jlr_sample
                 // Control the climate preconditioning
                 JsonObject? headers = this.connection!.head!.Copy();
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json";
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json";
 
                 JsonObject? ecc_data = this._AuthenticateECC();
                 ecc_data!["serviceParameters"] = service_parameters;
@@ -846,7 +846,7 @@ namespace jlr_sample
                 // Charging profile API
                 JsonObject? headers = this.connection!.head!.Copy();
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v5+json";
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.PhevService-v1+json";
 
                 JsonObject? cp_data = this._AuthenticateCP();
                 cp_data![service_parameter_key] = service_parameters;
@@ -883,7 +883,7 @@ namespace jlr_sample
                 // Set the wakeup time for the specified time (epoch milliseconds)
                 JsonObject? headers = this.connection!.head!.Copy();
                 headers!["Accept"] = "application/vnd.wirelesscar.ngtp.if9.ServiceStatus-v3+json";
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
                 return this.__Post("swu", headers, swu_data);
             }
 
@@ -1086,7 +1086,7 @@ namespace jlr_sample
                     { "pin", pin}
                 };
                 JsonObject? headers = this.connection!.head!.Copy();
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json; charset=utf-8";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.AuthenticateRequest-v2+json";
                 return this.__Post($"users/{this.connection.user_id}/authenticate", headers, data);
             }
 

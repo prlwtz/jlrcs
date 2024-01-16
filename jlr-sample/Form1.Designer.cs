@@ -46,6 +46,7 @@
             this.listViewVehicleStatus = new ListView();
             this.columnHeader2 = new ColumnHeader();
             this.columnHeader3 = new ColumnHeader();
+            this.buttonUpdate = new Button();
             this.SuspendLayout();
             // 
             // label1
@@ -208,11 +209,22 @@
             this.columnHeader3.Text = "Value";
             this.columnHeader3.Width = 300;
             // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Location = new Point(412, 249);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new Size(93, 23);
+            this.buttonUpdate.TabIndex = 17;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += this.buttonUpdate_Click;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(784, 561);
+            this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.listViewVehicleStatus);
             this.Controls.Add(this.labelNumVehicles);
             this.Controls.Add(this.label7);
@@ -255,5 +267,6 @@
         private ListView listViewVehicleStatus;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;
+        private Button buttonUpdate;
     }
 }
