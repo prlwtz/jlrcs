@@ -13,4 +13,5 @@ Class extensions to Json and String classes have been added to better align with
  
 The library structure has been kept as equal as possible to the original python code
 Method names have been converted to C# CamelCase standard to satisfy the compiler
+
 Property names have been untouched
