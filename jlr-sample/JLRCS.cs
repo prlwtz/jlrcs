@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace jlr_sample
 {
@@ -17,7 +18,7 @@ namespace jlr_sample
     // Class extensions to Json and String classes have been added to better align with python coding
     // 
     // The library structure has been kept as equal as possible to the original python code
-    // Method names have been converted to C# CamelCase standard to satisfy LINK
+    // Method names have been converted to C# CamelCase standard to satisfy LINT
     // Property names have been untouched
 
     public class JLRCS
@@ -161,7 +162,7 @@ namespace jlr_sample
                 {
                     headers["Authorization"] = this.head["Authorization"]!.ToString();
                 }
-                return this.__Request($"{url}/{command}", headers, null, "GET");
+                return this.__Request($"{url}/{command}", headers : headers, method : "GET");
             }
 
             internal JsonObject? __Post(string command, string url, JsonObject headers, JsonObject? data = null)
@@ -172,7 +173,7 @@ namespace jlr_sample
                 {
                     headers["Authorization"] = this.head["Authorization"]!.ToString();
                 }
-                return this.__Request($"{url}/{command}", headers, data, "POST");
+                return this.__Request($"{url}/{command}", headers: headers, data : data, method: "POST");
             }
 
             internal JsonObject? __Delete(string command, string url, JsonObject headers)
@@ -187,7 +188,7 @@ namespace jlr_sample
                 {
                     headers.Remove("Accept");
                 }
-                return this.__Request($"{url}/{command}", headers, null, "DELETE");
+                return this.__Request($"{url}/{command}", headers: headers, method: "DELETE");
             }
 
             public void Connect()
@@ -369,7 +370,7 @@ namespace jlr_sample
                 this._RegisterDeviceAndLogIn();
             }
 
-            public JsonObject? GetVehicles(JsonObject? headers = null)
+            public JsonObject? GetVehicles(JsonObject? headers)
             {
                 // Get vehicles for user
                 string url = $"{this.base_urls["IF9"]}/users/{this.user_id}/vehicles?primaryOnly=true";
@@ -889,13 +890,13 @@ namespace jlr_sample
             public JsonObject? EnableProvisioningMode(string pin)
             {
                 // Enable provisioning mode
-                return this._ProvCommand(pin, 0, "provisioning");
+                return this._ProvCommand(pin, null, "provisioning");
             }
 
             public JsonObject? EnableServiceMode(string pin, long expiration_time)
             {
                 // Enable service mode. Will disable at the specified time (epoch millis)
-                return this._ProvCommand(pin, expiration_time, "protectionStrategy_serviceMode");
+                return this._ProvCommand(pin, expiration_time.ToString(), "protectionStrategy_serviceMode");
             }
 
             public JsonObject? EnableServiceMode(string pin, DateTime expiration_time)
@@ -909,7 +910,7 @@ namespace jlr_sample
             {
                 // Disable service mode
                 long exp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                return this._ProvCommand(pin, exp, "protectionStrategy_serviceMode");
+                return this._ProvCommand(pin, exp.ToString(), "protectionStrategy_serviceMode");
             }
 
             public JsonObject? EnableGuardianMode(string pin, long expiration_time)
@@ -934,7 +935,7 @@ namespace jlr_sample
             public JsonObject? EnableTransportMode(string pin, long expiration_time)
             {
                 // Enable transport mode. Will be disabled at the specified time (epoch millis)
-                return this._ProvCommand(pin, expiration_time, "protectionStrategy_transportMode");
+                return this._ProvCommand(pin, expiration_time.ToString(), "protectionStrategy_transportMode");
             }
 
             public JsonObject? EnableTransportMode(string pin, DateTime expiration_time)
@@ -947,22 +948,22 @@ namespace jlr_sample
             public JsonObject? DisableTransportMode(string pin)
             {
                 // Disable transport mode
-                return this._ProvCommand(pin, 0, "protectionStrategy_transportMode");
+                return this._ProvCommand(pin, null, "protectionStrategy_transportMode");
             }
 
             public JsonObject? EnablePrivacyMode(string pin)
             {
                 // Enable privacy mode. Will disable journey logging
-                return this._ProvCommand(pin, 0, "privacySwitch_on");
+                return this._ProvCommand(pin, null, "privacySwitch_on");
             }
 
             public JsonObject? DisablePrivacyMode(string pin)
             {
                 // Disable privacy mode. Will enable journey logging
-                return this._ProvCommand(pin, 0, "privacySwitch_off");
+                return this._ProvCommand(pin, null, "privacySwitch_off");
             }
 
-            private JsonObject? _ProvCommand(string pin, long expiration_time, string mode)
+            private JsonObject? _ProvCommand(string pin, string? expiration_time, string mode)
             {
                 // Send prov endpoint commands. Used for service/transport/privacy mode
                 JsonObject? headers = this.connection!.head!.Copy();
@@ -970,8 +971,8 @@ namespace jlr_sample
                 JsonObject? prov_data = this._AuthenticatePROV(pin);
 
                 prov_data!["serviceCommand"] = mode;
-                prov_data!["startTime"] = 0;
-                prov_data!["endTime"] = expiration_time;
+                prov_data!["startTime"] = null;
+                prov_data!["endTime"] = expiration_time!;
 
                 return this.__Post("prov", headers, prov_data);
             }
