@@ -312,6 +312,8 @@ namespace jlr_sample
                     { "Authorization", $"Bearer {access_token}" },
                     { "X-Device-Id", this.device_id },
                     { "x-telematicsprogramtype", "jlrpy" },
+                    { "x-App-Id", "ICR_JAGUAR" },
+                    { "x-App-Secret", "018dd168-6271-707f-9fd4-aed2bf76905e" },
                     { "Content-Type", "application/json" }
                 };
             }
