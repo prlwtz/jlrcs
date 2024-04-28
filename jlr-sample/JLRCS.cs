@@ -634,7 +634,7 @@ namespace jlr_sample
             {
                 // Start Remote Engine preconditioning
                 JsonObject? headers = this.connection!.head!.Copy();
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
                 this._SetRCCTargetValue(pin, target_value);
                 JsonObject? reon_data = this._AuthenticateREON(pin);
                 return this.__Post("engineOn", headers, reon_data);
@@ -644,7 +644,7 @@ namespace jlr_sample
             {
                 // Stop Remote Engine preconditioning
                 JsonObject? headers = this.connection!.head!.Copy();
-                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v2+json";
+                headers!["Content-Type"] = "application/vnd.wirelesscar.ngtp.if9.StartServiceConfiguration-v3+json";
 
                 JsonObject? reoff_data = this._AuthenticateREOFF(pin);
                 return this.__Post("engineOff", headers, reoff_data);
