@@ -312,8 +312,8 @@ namespace jlr_sample
                     { "Authorization", $"Bearer {access_token}" },
                     { "X-Device-Id", this.device_id },
                     { "x-telematicsprogramtype", "jlrpy" },
-                    { "x-App-Id", "ICR_JAGUAR" },
-                    { "x-App-Secret", "018dd168-6271-707f-9fd4-aed2bf76905e" },
+                    { "x-App-Id", "ICR_JAGUAR_ANDROID" },
+                    { "x-App-Secret", "7bf6f544-1926-4714-8066-ceceb40d538d" },
                     { "Content-Type", "application/json" }
                 };
             }
@@ -321,12 +321,12 @@ namespace jlr_sample
             private JsonObject? _Authenticate(JsonObject? data = null)
             {
                 // Raw urlopen command to the auth url
-                string url = $"{this.base_urls["IFAS"]}/tokens";
+                string url = $"{this.base_urls["IFAS"]}/tokens/tokensSSO";
                 JsonObject auth_headers = new JsonObject()
                 {
                     { "Authorization", "Basic YXM6YXNwYXNz" },
                     { "Content-Type", "application/json" },
-                    { "X-Device-Id", this.device_id }
+                    { "user-agent", "jlrcs" }
                 };
                 return this.__Request(url, auth_headers, data, "POST");
             }
